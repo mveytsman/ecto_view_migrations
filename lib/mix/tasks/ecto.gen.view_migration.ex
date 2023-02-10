@@ -109,12 +109,12 @@ defmodule Mix.Tasks.Ecto.Gen.ViewMigration do
   defp pad(i) when i < 10, do: <<?0, ?0 + i>>
   defp pad(i), do: to_string(i)
 
-  embed_template(:sql, """
+  embed_template :sql, """
   create or replace view <%= @name %> as
   -- insert your view here
-  """)
+  """
 
-  embed_template(:migration, """
+  embed_template :migration, """
   defmodule <%= inspect @mod %> do
     use <%= inspect migration_module() %>
     def up do
@@ -127,5 +127,5 @@ defmodule Mix.Tasks.Ecto.Gen.ViewMigration do
       execute(sql)
     end
   end
-  """)
+  """
 end
