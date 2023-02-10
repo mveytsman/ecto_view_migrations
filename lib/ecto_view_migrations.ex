@@ -1,18 +1,7 @@
 defmodule EctoViewMigrations do
   @moduledoc """
-  Documentation for `EctoViewMigrations`.
+  Generates migrations to write views in SQL.
+
+  See `Mix.Tasks.Ecto.Gen.ViewMigration` for usage.
   """
-
-  @doc """
-  Hello world.
-
-  ## Examples
-
-      iex> EctoViewMigrations.hello()
-      :world
-
-  """
-  def hello do
-    :world
-  end
 end

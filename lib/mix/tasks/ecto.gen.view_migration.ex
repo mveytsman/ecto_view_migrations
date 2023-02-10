@@ -1,17 +1,39 @@
 defmodule Mix.Tasks.Ecto.Gen.ViewMigration do
-  use Mix.Task, async: :true
+  use Mix.Task, async: true
 
   import Macro, only: [camelize: 1, underscore: 1]
   import Mix.Generator
   import Mix.Ecto
   import Mix.EctoSQL
 
+  @moduledoc """
+  Generates a view migration.
+
+  Uses the same configuration as `Mix.Ecto.Gen.Migration`.
+
+  ## Examples
+
+      $ mix ecto.gen.view_migration posts_stats
+      $ mix ecto.gen.view_migration post_stats -r Custom.Repo
+
+  This will generate a migration file and a SQL file (in `priv/repo/sql`).
+  The SQL file should be edited to contain the code for your view.
+
+  ## Command line options
+    * `-r`, `--repo` - the repo to generate migration for
+    * `--migrations-path` - the path to run the migrations from, defaults to `priv/repo/migrations`
+    * `--sql-path` - the path to store the sql files in, defaults to `priv/repo/sql`
+  """
+
+  @switches [migrations_path: :string, sql_path: :string]
+  @aliases [r: :repo]
+
   @impl true
   def run(args) do
     repos = parse_repo(args)
 
     Enum.map(repos, fn repo ->
-      case OptionParser.parse!(args, switches: [migrations_path: :string, sql_path: :string]) do
+      case OptionParser.parse!(args, switches: @switches, aliases: @aliases) do
         {opts, [name]} ->
           ensure_repo(repo, args)
 
