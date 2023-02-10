@@ -7,7 +7,12 @@ defmodule EctoViewMigrations.MixProject do
       version: "0.1.0",
       elixir: "~> 1.14",
       start_permanent: Mix.env() == :prod,
-      deps: deps()
+      deps: deps(),
+      name: "Ecto ViewMigrations",
+      source_url: "https://github.com/mveytsman/ecto_view_migrations",
+      description: "View migrations for Ecto!",
+      docs: docs(),
+      package: package()
     ]
   end
 
@@ -24,5 +29,16 @@ defmodule EctoViewMigrations.MixProject do
       {:ecto_sql, "~> 3.0"},
       {:ex_doc, "~> 0.27", only: :dev, runtime: false}
     ]
+  end
+
+  defp package do
+    [
+      licenses: ["MIT"],
+      links: %{"GitHub" => "https://github.com/mveytsman/ecto_view_migrations"}
+    ]
+  end
+
+  defp docs do
+    []
   end
 end

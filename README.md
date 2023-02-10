@@ -1,4 +1,4 @@
-# Ecto View Migrations
+# Ecto ViewMigrations
 
 Database views are a powerful tool, but it can be hard to fit them into your Ecto migrations.
 
@@ -22,8 +22,7 @@ If you are changing an existing view, the migration generator will detect this a
 Note that, at least in Postgres, `create or replace view` lets you modify the query not the columns. We will want to let the user specify `alter view` or some other mechanism if they need to add or delete columns. Currently, you'd have to do this by hand in the migration.
 ## Installation
 
-If [available in Hex](https://hex.pm/docs/publish), the package can be installed
-by adding `ecto_view_migrations` to your list of dependencies in `mix.exs`:
+The package can be installed by adding `ecto_view_migrations` to your list of dependencies in `mix.exs`:
 
 ```elixir
 def deps do
