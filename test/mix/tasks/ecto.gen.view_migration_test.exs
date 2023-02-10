@@ -40,7 +40,7 @@ defmodule Mix.Tasks.Ecto.Gen.ViewMigrationsTest do
              defmodule Mix.Tasks.Ecto.Gen.ViewMigrationsTest.Repo.Migrations.MyView do
                use Ecto.Migration
                def up do
-                 sql = Path.join(:code.priv_dir(:ecto_view_migrations), "repo/sql", "#{Path.basename(sql_path)}") |> File.read()
+                 sql = Path.join(:code.priv_dir(:ecto_view_migrations), "repo/sql/#{Path.basename(sql_path)}") |> File.read!()
                  execute(sql)
                end
 
@@ -61,12 +61,12 @@ defmodule Mix.Tasks.Ecto.Gen.ViewMigrationsTest do
              defmodule Mix.Tasks.Ecto.Gen.ViewMigrationsTest.Repo.Migrations.MyView do
                use Ecto.Migration
                def up do
-                 sql = Path.join(:code.priv_dir(:ecto_view_migrations), "repo/sql", "#{Path.basename(new_sql_path)}") |> File.read()
+                 sql = Path.join(:code.priv_dir(:ecto_view_migrations), "repo/sql/#{Path.basename(new_sql_path)}") |> File.read!()
                  execute(sql)
                end
 
                def down do
-                 sql = Path.join(:code.priv_dir(:ecto_view_migrations), "repo/sql", "#{Path.basename(old_sql_path)}") |> File.read()
+                 sql = Path.join(:code.priv_dir(:ecto_view_migrations), "repo/sql/#{Path.basename(old_sql_path)}") |> File.read!()
                  execute(sql)
                end
              end

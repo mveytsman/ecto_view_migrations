@@ -96,12 +96,12 @@ defmodule Mix.Tasks.Ecto.Gen.ViewMigration do
   defmodule <%= inspect @mod %> do
     use <%= inspect migration_module() %>
     def up do
-      sql = Path.join(:code.priv_dir(<%= inspect app_name %>), "repo/sql", <%= inspect @sql_basename %>) |> File.read()
+      sql = Path.join(:code.priv_dir(<%= inspect app_name %>), "repo/sql/<%= @sql_basename %>") |> File.read!()
       execute(sql)
     end
 
     def down do
-      sql =<%= if @prev_sql_basename do %> Path.join(:code.priv_dir(<%= inspect app_name() %>), "repo/sql", <%= inspect @prev_sql_basename %>) |> File.read()<% else %> "drop view if exists <%= @name %>"<% end %>
+      sql =<%= if @prev_sql_basename do %> Path.join(:code.priv_dir(<%= inspect app_name() %>), "repo/sql/<%= @prev_sql_basename %>") |> File.read!()<% else %> "drop view if exists <%= @name %>"<% end %>
       execute(sql)
     end
   end
