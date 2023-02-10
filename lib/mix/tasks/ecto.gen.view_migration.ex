@@ -1,5 +1,5 @@
 defmodule Mix.Tasks.Ecto.Gen.ViewMigration do
-  use Mix.Task
+  use Mix.Task, async: :true
 
   import Macro, only: [camelize: 1, underscore: 1]
   import Mix.Generator
@@ -11,11 +11,11 @@ defmodule Mix.Tasks.Ecto.Gen.ViewMigration do
     repos = parse_repo(args)
 
     Enum.map(repos, fn repo ->
-      case OptionParser.parse!(args, switches: []) do
+      case OptionParser.parse!(args, switches: [migrations_path: :string, sql_path: :string]) do
         {opts, [name]} ->
           ensure_repo(repo, args)
 
-          ts = timestamp()
+          ts = opts[:timestamp] || timestamp()
 
           sql_path = opts[:sql_path] || Path.join(source_repo_priv(repo), "sql")
           sql_basename = "#{underscore(name)}_#{ts}.sql"
@@ -32,10 +32,12 @@ defmodule Mix.Tasks.Ecto.Gen.ViewMigration do
 
           create_file(sql_file, sql_template(name: name))
 
-          migration_path = Path.join(source_repo_priv(repo), "migrations")
+          migration_path =
+            opts[:migrations_path] || Path.join(source_repo_priv(repo), "migrations")
+
           migration_basename = "#{ts}_load_sql_#{underscore(name)}.exs"
           migration_file = Path.join(migration_path, migration_basename)
-          unless File.dir?(migration_path), do: create_directory(migration_file)
+          unless File.dir?(migration_path), do: create_directory(migration_path)
 
           assigns = [
             name: name,
@@ -55,7 +57,7 @@ defmodule Mix.Tasks.Ecto.Gen.ViewMigration do
             ])
           end
 
-          sql_file
+          {sql_file, migration_file}
 
         {_, _} ->
           Mix.raise(
@@ -99,7 +101,7 @@ defmodule Mix.Tasks.Ecto.Gen.ViewMigration do
     end
 
     def down do
-      sql =<%= if @prev_sql_basename do %> Path.join(:code.priv_dir(<%= app_name() %>), "repo/sql", <%= inspect @prev_sql_basename %>) |> File.read() <% else %> "drop view if exists <%= @name %>" <% end %>
+      sql =<%= if @prev_sql_basename do %> Path.join(:code.priv_dir(<%= app_name() %>), "repo/sql", <%= inspect @prev_sql_basename %>) |> File.read()<% else %> "drop view if exists <%= @name %>"<% end %>
       execute(sql)
     end
   end
